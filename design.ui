@@ -16,6 +16,18 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>791</width>
+    <height>414</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>791</width>
+    <height>414</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Renaming Tool</string>
   </property>
@@ -124,7 +136,7 @@
    <widget class="QPushButton" name="do_execute">
     <property name="geometry">
      <rect>
-      <x>540</x>
+      <x>550</x>
       <y>375</y>
       <width>231</width>
       <height>31</height>

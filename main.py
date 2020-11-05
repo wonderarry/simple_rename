@@ -1,6 +1,7 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 import design
 import os
+import win32clipboard
 
 class Main_app(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
@@ -34,14 +35,22 @@ class Main_app(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.main_list.insertItem(self.main_list.currentRow() + 1, curr_item)
         self.main_list.setCurrentRow(self.main_list.currentRow() + 2)
 
+
     def rename(self):
         end_folder = os.path.dirname(self.main_list.item(0).text())
         name_list = [os.path.basename(self.main_list.item(i).text()) for i in range(0, self.main_list.count())]
         for i in range(len(name_list)):
-            new_name = self.name_mask.text() + str(int(self.name_base.value()) + i * int(self.name_incr.value())) + '.' + name_list[i].split('.')[-1]
+            new_name = self.name_mask.text() + str(self.name_base.value() + i * self.name_incr.value()) + '.' + name_list[i].split('.')[-1]
             os.system('cd /d "' + end_folder + '" & ren "' + name_list[i] + '" "' + new_name + '"')
             self.main_list.item(i).setText(os.path.dirname(self.main_list.item(i).text()) + '\\' + new_name)
 
+
+    def append_items(self):
+        win32clipboard.OpenClipboard()
+        filenames = win32clipboard.GetClipboardData(win32clipboard.CF_HDROP)
+        win32clipboard.CloseClipboard()
+        for item in filenames:
+            self.main_list.addItem(item)
 
     def __init__(self):
         super().__init__()
@@ -60,7 +69,8 @@ class Main_app(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.move_down.clicked.connect(self.move_downwards)
         #Executing
         self.do_execute.clicked.connect(self.rename)
-
+        #Bind
+        QtWidgets.QShortcut(QtGui.QKeySequence('Ctrl+Shift+Alt+W'),self).activated.connect(self.append_items)
 
 
 
